@@ -162,18 +162,13 @@ struct ModelInformationTests: Sendable {
     
     // MARK: - Model Serialization Tests
     
-    @Test("OpenAI model raw value serialization")
-    func openAIModelRawValueSerialization() {
+    @Test("OpenAI model API name serialization")
+    func openAIModelAPINameSerialization() {
         let gpt4o = OpenAIModel.gpt4o
         let o1 = OpenAIModel.o1
         
-        #expect(gpt4o.rawValue == "gpt-4o")
-        #expect(o1.rawValue == "o1")
-        
-        // Test that we can create from raw value
-        #expect(OpenAIModel(rawValue: "gpt-4o") == .gpt4o)
-        #expect(OpenAIModel(rawValue: "o1") == .o1)
-        #expect(OpenAIModel(rawValue: "invalid-model") == nil)
+        #expect(gpt4o.apiName == "gpt-4o")
+        #expect(o1.apiName == "o1")
     }
     
     @Test("OpenAI model string representation")
@@ -223,11 +218,11 @@ struct ModelInformationTests: Sendable {
     @Test("OpenAI models can be sorted")
     func openAIModelSorting() {
         let models = [OpenAIModel.o1, OpenAIModel.gpt4o, OpenAIModel.gpt4oMini]
-        let sortedModels = models.sorted { $0.rawValue < $1.rawValue }
+        let sortedModels = models.sorted { $0.apiName < $1.apiName }
         
-        #expect(sortedModels[0] == .gpt4o)
-        #expect(sortedModels[1] == .gpt4oMini)
-        #expect(sortedModels[2] == .o1)
+        #expect(sortedModels[0].apiName == "gpt-4o")
+        #expect(sortedModels[1].apiName == "gpt-4o-mini")
+        #expect(sortedModels[2].apiName == "o1")
     }
     
     // MARK: - Model Performance Tests
@@ -268,11 +263,8 @@ struct ModelInformationTests: Sendable {
     
     @Test("OpenAI model handles case insensitive raw value creation")
     func openAIModelCaseInsensitiveCreation() {
-        // OpenAI models are case sensitive
-        #expect(OpenAIModel(rawValue: "GPT-4O") == nil)
-        #expect(OpenAIModel(rawValue: "O1") == nil)
-        #expect(OpenAIModel(rawValue: "gpt-4o") == .gpt4o)
-        #expect(OpenAIModel(rawValue: "o1") == .o1)
+        // OpenAI models are case sensitive - this test is no longer applicable
+        // since we no longer have rawValue initializer in the new struct-based approach
     }
     
     @Test("OpenAI model handles empty collections gracefully")

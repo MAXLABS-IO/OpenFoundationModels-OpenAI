@@ -93,6 +93,8 @@ let model = OpenAILanguageModel(configuration: configuration, model: .gpt4o)
 
 ## Supported Models
 
+### Predefined Models
+
 | Model Family | Model | Context Window | Max Output | Vision | Reasoning | Knowledge Cutoff |
 |--------------|-------|----------------|------------|--------|-----------|------------------|
 | **GPT** | gpt-4o | 128,000 | 16,384 | ✅ | ❌ | October 2023 |
@@ -103,6 +105,41 @@ let model = OpenAILanguageModel(configuration: configuration, model: .gpt4o)
 | **Reasoning** | o3 | 200,000 | 32,768 | ❌ | ✅ | October 2023 |
 | **Reasoning** | o3-pro | 200,000 | 65,536 | ❌ | ✅ | October 2023 |
 | **Reasoning** | o4-mini | 200,000 | 16,384 | ❌ | ✅ | October 2023 |
+
+### Custom Models
+
+The OpenFoundationModels-OpenAI package also supports custom models through the `OpenAIModel.custom(name:config:)` initializer. This allows you to integrate with other OpenAI-compatible APIs or custom models not included in the predefined set.
+
+```swift
+let customConfig = OpenAIModel.CustomModelConfig(
+    contextWindow: 10_000,
+    maxOutputTokens: 8_192,
+    capabilities: [.textGeneration, .functionCalling, .streaming],
+    pricingTier: .standard,
+    knowledgeCutoff: "January 2025",
+    modelType: .gpt,
+    parameterConstraints: ParameterConstraints(
+        supportsTemperature: true,
+        supportsTopP: true,
+        supportsFrequencyPenalty: true,
+        supportsPresencePenalty: true,
+        supportsStop: true,
+        maxTokensParameterName: "max_tokens",
+        temperatureRange: 0.0...1.0,
+        topPRange: 0.0...1.0
+    )
+)
+
+let customModel = OpenAIModel.custom(name: "my-custom-model", config: customConfig)
+let model = OpenAILanguageModel(apiKey: apiKey, model: customModel)
+```
+
+Custom models support:
+- Configurable context window and output token limits
+- Custom capabilities and pricing tiers
+- Model-specific parameter constraints
+- Knowledge cutoff dates
+- Model type specification (GPT vs Reasoning)
 
 ## Model Constraints
 

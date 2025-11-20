@@ -46,6 +46,7 @@ swift package generate-xcodeproj
    - Single enum covering GPT-4o, Reasoning models (o1, o3, o4-mini)
    - Internal model type detection for automatic parameter validation
    - Model-specific capabilities and constraints
+   - Support for custom models via `OpenAIModel.custom(name:config:)` initializer
 
 3. **Custom HTTP Client**: Self-contained networking layer
    - No external dependencies beyond OpenFoundationModels
@@ -98,7 +99,7 @@ Sources/OpenFoundationModelsOpenAI/
 ├── OpenAIConfiguration.swift           # Configuration and model definitions
 ├── OpenFoundationModelsOpenAI.swift    # Public API and convenience initializers
 ├── Models/
-│   └── OpenAIModel.swift               # Unified model enum with capabilities
+│   └── OpenAIModel.swift               # Unified model enum with capabilities, including custom model support
 ├── HTTP/
 │   └── OpenAIHTTPClient.swift          # Custom HTTP client implementation
 ├── API/
